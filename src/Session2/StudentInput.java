@@ -25,6 +25,7 @@ public class StudentInput {
         lastName = scanner.next();
         System.out.println("Enter your age: ");
         age = scanner.nextInt();
+        scanner.close();
     }
     public void displayDetails() {
         System.out.println("\n ====== Student Details ======");
