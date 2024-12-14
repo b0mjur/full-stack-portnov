@@ -19,6 +19,8 @@ public class WhileExample {
             number++;
             scanner.close();
 
+
+
         }
     }
 }
