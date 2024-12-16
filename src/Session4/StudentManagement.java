@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class StudentManagement {
 
-
     static class Student {
         int studentId;
         String firstName;
@@ -17,7 +16,6 @@ public class StudentManagement {
             this.lastName = lName;
             this.studentAge = Age;
         }
-
     }
 
     public static void main(String[] args) {
@@ -25,9 +23,6 @@ public class StudentManagement {
 
         Student[] students = new Student[5];
         int studentCount = 0;
-
-//        Student student = new Student(0, "Jack", "Pearson", 45);
-
 
         while (true) {
             System.out.println("===== Student Menu =====");
@@ -37,13 +32,23 @@ public class StudentManagement {
             System.out.println("4. Exit");
             System.out.println("Enter your choice: ");
 
-
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
+                    boolean idExists = false;
                     System.out.println("Enter student id: ");
                     int studentId = scanner.nextInt();
                     scanner.nextLine();
+                    for (int i = 0; i < studentCount; i++) {
+                        if (students[i].studentId == studentId) {
+                            idExists = true;
+                            break;
+                        }
+                    }
+                    if (idExists) {
+                        System.out.println("Student with id " + studentId + " already exists");
+                        break;
+                    }
 
                     System.out.println("Enter student first name: ");
                     String firstName = scanner.next();
@@ -54,10 +59,7 @@ public class StudentManagement {
                     System.out.println("Enter student age: ");
                     int studentAge = scanner.nextInt();
 
-                    Student student = new Student(studentId,
-                                                    firstName,
-                                                    lastName,
-                                                    studentAge);
+                    Student student = new Student(studentId, firstName, lastName, studentAge);
 
                     students[studentCount] = student;
                     studentCount++;
@@ -77,14 +79,20 @@ public class StudentManagement {
                     break;
 
                 case 3:
-                //provide an option to delete a student
+                    // Provide an option to delete a student
                     System.out.println("Enter student id to delete: ");
                     int id = scanner.nextInt();
+                    idExists = false; // Use the existing variable
                     for (int i = 0; i < studentCount; i++) {
                         if (students[i].studentId == id) {
                             students[i] = null;
                             System.out.println("Student deleted successfully");
+                            idExists = true;
+                            break;
                         }
+                    }
+                    if (!idExists) {
+                        System.out.println("Student with id " + id + " does not exist");
                     }
                     break;
                 case 4:
@@ -95,7 +103,6 @@ public class StudentManagement {
                 default:
                     System.out.println("Invalid choice");
             }
-
         }
     }
 }
