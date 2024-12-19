@@ -1,24 +1,9 @@
-package src.Session6;
+package src.Session7.SMS;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StudentManagement {
-
-    static class Student {
-        int studentId;
-        String firstName;
-        String lastName;
-        int studentAge;
-
-        Student(int id, String fName, String lName, int Age) {
-            this.studentId = id;
-            this.firstName = fName;
-            this.lastName = lName;
-            this.studentAge = Age;
-        }
-    }
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -29,7 +14,8 @@ public class StudentManagement {
             System.out.println("1. Enter student details");
             System.out.println("2. Display student details");
             System.out.println("3. Delete student");
-            System.out.println("4. Exit");
+            System.out.println("4. Edit student");
+            System.out.println("5. Exit");
             System.out.println("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -46,7 +32,6 @@ public class StudentManagement {
                         break;
                     } catch (IndexOutOfBoundsException e) {
                         idExists = false;
-                        System.out.println("Student with id " + studentId + " does not exist");
                     }
                     if (idExists) {
                         System.out.println("Student with id " + studentId + " already exists");
@@ -66,17 +51,16 @@ public class StudentManagement {
 
                     students.add(student);
 
-                    System.out.println("Information saved successfully");
+                    System.out.println("Information saved successfully" + student.toString());
                     break;
                 case 2:
                     for (int i = 0; i < students.size(); i++) {
                         Student s = students.get(i);
-                        System.out.println("===== Student Details =====");
-                        System.out.println("Student ID: " + s.studentId);
-                        System.out.println("First Name: " + s.firstName);
-                        System.out.println("Last Name: " + s.lastName);
-                        System.out.println("Age: " + s.studentAge);
-                        System.out.println("===== End of Student Details =====");
+                        System.out.printf("%-10d %-20s %-20s %-5d\n",
+                                s.studentId,
+                                s.firstName,
+                                s.lastName,
+                                s.studentAge);
                     }
                     break;
 
@@ -90,7 +74,39 @@ public class StudentManagement {
                         System.out.println("Student with id " + id + " does not exist");
                     }
                     break;
+
                 case 4:
+                    //define student to edit
+                    //search for student
+                    //found/not found
+                    //if found, edit student(set new values)
+
+                    System.out.println("Enter student id: ");
+                    int idToEdit = scanner.nextInt();
+                    scanner.nextLine();
+
+                    boolean found = false;
+                    for (Student s : students) {
+                        if (s.studentId == idToEdit) {
+                            found = true;
+                            System.out.println("Enter new first name: ");
+                            s.firstName = scanner.next();
+                            System.out.println("Enter new last name: ");
+                            s.lastName = scanner.next();
+                            System.out.println("Enter new age: ");
+                            s.studentAge = scanner.nextInt();
+                            scanner.nextLine();
+                            System.out.println("Student edited successfully");
+                            found = true;
+                            break;
+
+                        }
+                    }
+                    if (!found) {
+                        System.out.println("Student with id " + idToEdit + " not found");
+                    }
+                    break;
+                case 5:
                     scanner.close();
                     System.exit(0);
                     break;
