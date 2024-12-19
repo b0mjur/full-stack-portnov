@@ -35,38 +35,48 @@ public class StudentManagement {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    boolean idExists = false;
-                    System.out.println("Enter student id: ");
-                    int studentId = scanner.nextInt();
-                    scanner.nextLine();
-                    for (int i = 0; i < studentCount; i++) {
-                        if (students[i].studentId == studentId) {
-                            idExists = true;
-                            break;
+                    try {
+                        System.out.println("Enter student id: ");
+                        int studentId = scanner.nextInt();
+                        scanner.nextLine();
+
+                        boolean ifExists = false;
+                        for (int i = 0; i < studentCount; i++ ) {
+                            if (students[i].studentId == studentId) {
+                                ifExists = true;
+                                break;
+                            }
                         }
-                    }
-                    if (idExists) {
-                        System.out.println("Student with id " + studentId + " already exists");
+                        if (ifExists) {
+                            System.out.println("Student with id " + studentId + " already exists");
+                            break;
+                        } else {
+                            System.out.println("Enter student first name: ");
+                            String firstName = scanner.next();
+
+                            System.out.println("Enter student last name: ");
+                            String lastName = scanner.next();
+
+                            System.out.println("Enter student age: ");
+                            int studentAge = scanner.nextInt();
+
+                            Student student = new Student(studentId, firstName, lastName, studentAge);
+
+                            students[studentCount] = student;
+                            studentCount++;
+
+                            System.out.println("Information saved successfully");
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Student array is full");
                         break;
                     }
 
-                    System.out.println("Enter student first name: ");
-                    String firstName = scanner.next();
-
-                    System.out.println("Enter student last name: ");
-                    String lastName = scanner.next();
-
-                    System.out.println("Enter student age: ");
-                    int studentAge = scanner.nextInt();
-
-                    Student student = new Student(studentId, firstName, lastName, studentAge);
-
-                    students[studentCount] = student;
-                    studentCount++;
-
-                    System.out.println("Information saved successfully");
-                    break;
                 case 2:
+                    if (studentCount == 0) {
+                        System.out.println("Student list is empty");
+                        break;
+                    }
                     for (int i = 0; i < studentCount; i++) {
                         Student s = students[i];
                         System.out.println("===== Student Details =====");
@@ -82,7 +92,7 @@ public class StudentManagement {
                     // Provide an option to delete a student
                     System.out.println("Enter student id to delete: ");
                     int id = scanner.nextInt();
-                    idExists = false; // Use the existing variable
+                    boolean idExists = false; // Use the existing variable
                     for (int i = 0; i < studentCount; i++) {
                         if (students[i].studentId == id) {
                             students[i] = null;
