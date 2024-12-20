@@ -46,22 +46,31 @@ public class StudentManagement {
 
                     System.out.println("Enter student age: ");
                     int studentAge = scanner.nextInt();
+                    scanner.nextLine();
 
-                    Student student = new Student(studentId, firstName, lastName, studentAge);
+                    System.out.println("Enter student major: ");
+                    String major = scanner.nextLine();
+
+                    Student student = new Student(studentId, firstName, lastName, studentAge, major);
 
                     students.add(student);
 
                     System.out.println("Information saved successfully" + student.toString());
                     break;
                 case 2:
+                    System.out.println("===== Student List =====");
+                    System.out.printf("%-10s %-20s %-20s %-5s %-20s\n", "ID", "First Name", "Last Name", "Age", "Major");
+                    System.out.println("------------------------------------------------------------");
                     for (int i = 0; i < students.size(); i++) {
                         Student s = students.get(i);
-                        System.out.printf("%-10d %-20s %-20s %-5d\n",
+                        System.out.printf("%-10d %-20s %-20s %-5d %-20s\n",
                                 s.studentId,
                                 s.firstName,
                                 s.lastName,
-                                s.studentAge);
+                                s.studentAge,
+                                s.major);
                     }
+                    System.out.println("------------------------------------------------------------");
                     break;
 
                 case 3:
@@ -76,11 +85,6 @@ public class StudentManagement {
                     break;
 
                 case 4:
-                    //define student to edit
-                    //search for student
-                    //found/not found
-                    //if found, edit student(set new values)
-
                     System.out.println("Enter student id: ");
                     int idToEdit = scanner.nextInt();
                     scanner.nextLine();
@@ -96,10 +100,11 @@ public class StudentManagement {
                             System.out.println("Enter new age: ");
                             s.studentAge = scanner.nextInt();
                             scanner.nextLine();
+                            System.out.println("Enter new major: ");
+                            s.major = scanner.nextLine();
                             System.out.println("Student edited successfully");
                             found = true;
                             break;
-
                         }
                     }
                     if (!found) {
