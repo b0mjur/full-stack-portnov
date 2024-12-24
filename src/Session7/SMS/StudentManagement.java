@@ -13,9 +13,10 @@ public class StudentManagement {
             System.out.println("===== Student Menu =====");
             System.out.println("1. Enter student details");
             System.out.println("2. Display student details");
-            System.out.println("3. Delete student");
-            System.out.println("4. Edit student");
-            System.out.println("5. Exit");
+            System.out.println("3. Display number of students");
+            System.out.println("4. Delete student");
+            System.out.println("5. Edit student");
+            System.out.println("6. Exit");
             System.out.println("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -46,12 +47,23 @@ public class StudentManagement {
 
                     System.out.println("Enter student age: ");
                     int studentAge = scanner.nextInt();
-                    scanner.nextLine();
+                    if (studentAge < 18 || studentAge > 150) {
+                        System.out.println("Invalid age. Age must be between 18 and 60");
+                        scanner.nextLine();
+                    }
+
 
                     System.out.println("Enter student major: ");
                     String major = scanner.nextLine();
+                    boolean validMajor = false;
+                    if (major.equalsIgnoreCase("Art") || major.equalsIgnoreCase("Economics") || major.equalsIgnoreCase("Math")) {
+                        validMajor = true;
+                    } else {
+                        System.out.println("Invalid major. Major must be Art, Economics or Math");
+                        scanner.nextLine();
+                    }
 
-                    Student student = new Student(studentId, firstName, lastName, studentAge, major);
+                    Student student = new Student(firstName, lastName, studentAge, major);
 
                     students.add(student);
 
@@ -60,7 +72,7 @@ public class StudentManagement {
                 case 2:
                     System.out.println("===== Student List =====");
                     System.out.printf("%-10s %-20s %-20s %-5s %-20s\n", "ID", "First Name", "Last Name", "Age", "Major");
-                    System.out.println("------------------------------------------------------------");
+                    System.out.println("---------------------------------------------------------");
                     for (int i = 0; i < students.size(); i++) {
                         Student s = students.get(i);
                         System.out.printf("%-10d %-20s %-20s %-5d %-20s\n",
@@ -70,10 +82,12 @@ public class StudentManagement {
                                 s.studentAge,
                                 s.major);
                     }
-                    System.out.println("------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------");
                     break;
-
                 case 3:
+                    System.out.println("Number of students: " + Student.getStudentCount());
+                    break;
+                case 4:
                     System.out.println("Enter student id to delete: ");
                     int id = scanner.nextInt();
                     idExists = false;
@@ -84,7 +98,7 @@ public class StudentManagement {
                     }
                     break;
 
-                case 4:
+                case 5:
                     System.out.println("Enter student id: ");
                     int idToEdit = scanner.nextInt();
                     scanner.nextLine();
@@ -111,7 +125,7 @@ public class StudentManagement {
                         System.out.println("Student with id " + idToEdit + " not found");
                     }
                     break;
-                case 5:
+                case 6:
                     scanner.close();
                     System.exit(0);
                     break;
