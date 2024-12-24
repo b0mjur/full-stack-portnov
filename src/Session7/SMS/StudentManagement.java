@@ -22,45 +22,35 @@ public class StudentManagement {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    boolean idExists = false;
-                    System.out.println("Enter student id: ");
-                    int studentId = scanner.nextInt();
-                    scanner.nextLine();
-
-                    try {
-                        students.get(studentId);
-                        idExists = true;
-                        break;
-                    } catch (IndexOutOfBoundsException e) {
-                        idExists = false;
-                    }
-                    if (idExists) {
-                        System.out.println("Student with id " + studentId + " already exists");
-                        break;
-                    }
-
                     System.out.println("Enter student first name: ");
                     String firstName = scanner.next();
 
                     System.out.println("Enter student last name: ");
                     String lastName = scanner.next();
 
-                    System.out.println("Enter student age: ");
-                    int studentAge = scanner.nextInt();
-                    if (studentAge < 18 || studentAge > 150) {
-                        System.out.println("Invalid age. Age must be between 18 and 60");
-                        scanner.nextLine();
+                    int studentAge;
+                    while (true) {
+                        System.out.println("Enter student age: ");
+                        studentAge = scanner.nextInt();
+                        try {
+                            Student.validateAge(studentAge);
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
+                    scanner.nextLine();
 
-
-                    System.out.println("Enter student major: ");
-                    String major = scanner.nextLine();
-                    boolean validMajor = false;
-                    if (major.equalsIgnoreCase("Art") || major.equalsIgnoreCase("Economics") || major.equalsIgnoreCase("Math")) {
-                        validMajor = true;
-                    } else {
-                        System.out.println("Invalid major. Major must be Art, Economics or Math");
-                        scanner.nextLine();
+                    String major;
+                    while (true) {
+                        System.out.println("Enter student major: ");
+                        major = scanner.nextLine();
+                        try {
+                            Student.validateMajor(major);
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
 
                     Student student = new Student(firstName, lastName, studentAge, major);
@@ -76,11 +66,11 @@ public class StudentManagement {
                     for (int i = 0; i < students.size(); i++) {
                         Student s = students.get(i);
                         System.out.printf("%-10d %-20s %-20s %-5d %-20s\n",
-                                s.studentId,
-                                s.firstName,
-                                s.lastName,
-                                s.studentAge,
-                                s.major);
+                                s.getStudentId(),
+                                s.getFirstName(),
+                                s.getLastName(),
+                                s.getStudentAge(),
+                                s.getMajor());
                     }
                     System.out.println("--------------------------------------------------------");
                     break;
@@ -90,14 +80,19 @@ public class StudentManagement {
                 case 4:
                     System.out.println("Enter student id to delete: ");
                     int id = scanner.nextInt();
-                    idExists = false;
-                    students.remove(id);
-                    System.out.println("Student deleted successfully");
-                    if (!idExists) {
+                    boolean studentFound = false;
+                    for (int i = 0; i < students.size(); i++) {
+                        if (students.get(i).getStudentId() == id) {
+                            students.remove(i);
+                            studentFound = true;
+                            System.out.println("Student deleted successfully");
+                            break;
+                        }
+                    }
+                    if (!studentFound) {
                         System.out.println("Student with id " + id + " does not exist");
                     }
                     break;
-
                 case 5:
                     System.out.println("Enter student id: ");
                     int idToEdit = scanner.nextInt();
@@ -105,17 +100,30 @@ public class StudentManagement {
 
                     boolean found = false;
                     for (Student s : students) {
-                        if (s.studentId == idToEdit) {
-                            found = true;
+                        if (s.getStudentId() == idToEdit) {
                             System.out.println("Enter new first name: ");
-                            s.firstName = scanner.next();
+                            s.setFirstName(scanner.next());
                             System.out.println("Enter new last name: ");
-                            s.lastName = scanner.next();
+                            s.setLastName(scanner.next());
                             System.out.println("Enter new age: ");
-                            s.studentAge = scanner.nextInt();
+                            while (true) {
+                                try {
+                                    s.setStudentAge(scanner.nextInt());
+                                    break;
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
                             scanner.nextLine();
                             System.out.println("Enter new major: ");
-                            s.major = scanner.nextLine();
+                            while (true) {
+                                try {
+                                    s.setMajor(scanner.nextLine());
+                                    break;
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
                             System.out.println("Student edited successfully");
                             found = true;
                             break;
