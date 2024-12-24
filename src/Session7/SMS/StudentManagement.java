@@ -57,11 +57,11 @@ public class StudentManagement {
 
                     students.add(student);
 
-                    System.out.println("Information saved successfully" + student.toString());
+                    System.out.println(" Information saved successfully " + student.toString());
                     break;
                 case 2:
                     System.out.println("===== Student List =====");
-                    System.out.printf("%-10s %-20s %-20s %-5s %-20s\n", "ID", "First Name", "Last Name", "Age", "Major");
+                    System.out.printf("%-10s %-20s %-20s %-5s %-20s\n", " ID", "First Name", "Last Name", "Age", "Major");
                     System.out.println("---------------------------------------------------------");
                     for (int i = 0; i < students.size(); i++) {
                         Student s = students.get(i);
@@ -112,6 +112,9 @@ public class StudentManagement {
                                     break;
                                 } catch (IllegalArgumentException e) {
                                     System.out.println(e.getMessage());
+                                } finally {
+                                    System.out.println("Application completed");
+                                    scanner.close();
                                 }
                             }
                             scanner.nextLine();
